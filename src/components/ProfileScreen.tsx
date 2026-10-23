@@ -237,7 +237,7 @@ export default function ProfileScreen({
               <div className="flex items-center gap-2 text-slate-800 dark:text-slate-200">
                 <Accessibility className="w-4.5 h-4.5 text-blue-600 animate-pulse" />
                 <div>
-                  <strong className="block">Accessibility Configuration</strong>
+                  <strong className="block">{t(language, 'profileConfig')}</strong>
                   <p className="text-[10px] text-slate-400 mt-0.5">Configure large text, speech guides, and ramps</p>
                 </div>
               </div>
@@ -265,7 +265,7 @@ export default function ProfileScreen({
                   rows={2}
                   value={feedbackText}
                   onChange={(e) => setFeedbackText(e.target.value)}
-                  placeholder="Tell us about your indoor routing experience..."
+                  placeholder={t(language, 'feedback')}
                   className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-3 text-xs focus:outline-none focus:ring-1 focus:ring-blue-600 dark:text-white"
                 />
                 <button

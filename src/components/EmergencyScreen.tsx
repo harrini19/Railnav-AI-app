@@ -4,13 +4,14 @@ import {
   Check, Eye, HelpCircle, Volume2, Accessibility, MapPin, Compass, Flame
 } from 'lucide-react';
 import { AccessibilitySettings } from '../types';
-import { useLanguage, t } from '../i18n';
+import { Language, languageConfig, useLanguage, t } from '../i18n';
 
 interface EmergencyScreenProps {
   isDarkMode: boolean;
   accessibility: AccessibilitySettings;
   setAccessibility: React.Dispatch<React.SetStateAction<AccessibilitySettings>>;
   onSpeakText: (text: string) => void;
+  onLanguageChange?: (language: Language) => void;
   onTriggerSOS?: (optionName: string) => Promise<void>;
 }
 
@@ -19,6 +20,7 @@ export default function EmergencyScreen({
   accessibility,
   setAccessibility,
   onSpeakText,
+  onLanguageChange,
   onTriggerSOS,
 }: EmergencyScreenProps) {
   const language = useLanguage();
@@ -33,14 +35,7 @@ export default function EmergencyScreen({
     { name: 'Lost & Found Claims Desk', phone: '011-233434', description: 'Report stolen or forgotten baggage' }
   ];
 
-  const languages = [
-    { code: 'en', label: 'English (US/UK)' },
-    { code: 'hi', label: 'हिन्दी (Hindi)' },
-    { code: 'ta', label: 'தமிழ் (Tamil)' },
-    { code: 'te', label: 'తెలుగు (Telugu)' },
-    { code: 'kn', label: 'ಕನ್ನಡ (Kannada)' },
-    { code: 'bn', label: 'বাংলা (Bengali)' }
-  ];
+  const languages = (Object.keys(languageConfig) as Language[]).map((code) => ({ code, label: languageConfig[code].label }));
 
   const handleTriggerSOS = async (optionName: string) => {
     if (onTriggerSOS) {
@@ -65,9 +60,9 @@ export default function EmergencyScreen({
   };
 
   const handleLanguageChange = (langCode: string) => {
-    setAccessibility(prev => ({ ...prev, language: langCode }));
-    const selectedLang = languages.find(l => l.code === langCode)?.label || 'English';
-    onSpeakText(`Language changed to ${selectedLang}`);
+    const nextLanguage = langCode as Language;
+    if (onLanguageChange) onLanguageChange(nextLanguage);
+    else setAccessibility(prev => ({ ...prev, language: nextLanguage }));
   };
 
   return (
@@ -89,7 +84,7 @@ export default function EmergencyScreen({
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
             }`}
           >
-            <ShieldAlert className="w-4 h-4" /> SOS & Emergency
+            <ShieldAlert className="w-4 h-4" /> {t(language, 'sosEmergency')}
           </button>
           <button
             id="btn-emergency-tab-access"
@@ -100,7 +95,7 @@ export default function EmergencyScreen({
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
             }`}
           >
-            <Accessibility className="w-4 h-4" /> Accessibility
+            <Accessibility className="w-4 h-4" /> {t(language, 'accessibility')}
           </button>
         </div>
       </div>
@@ -111,9 +106,9 @@ export default function EmergencyScreen({
             {/* Title */}
             <div className="text-left mb-4">
               <span className="text-[10px] text-rose-600 dark:text-rose-400 font-extrabold tracking-wider uppercase block">
-                IMMEDIATE ASSISTANCE
+                {t(language, 'immediateAssistance')}
               </span>
-              <h2 className="text-xl font-bold tracking-tight">Emergency Helplines</h2>
+              <h2 className="text-xl font-bold tracking-tight">{t(language, 'emergencyHelplines')}</h2>
             </div>
 
             {/* Simulated SOS Panel */}
@@ -130,7 +125,7 @@ export default function EmergencyScreen({
                   <span className="text-sm font-black tracking-widest font-mono">SOS</span>
                 </button>
                 <span className="text-[11px] font-bold text-rose-700 dark:text-rose-400 mt-4 uppercase tracking-wide">
-                  Hold to Trigger Live Dispatch
+                  {t(language, 'holdToTrigger')}
                 </span>
                 <p className="text-[10px] text-slate-400 text-center max-w-[200px] mt-1 leading-normal">
                   Fires current GPS and Platform details directly to local Station Master and RPF.
@@ -141,7 +136,7 @@ export default function EmergencyScreen({
                 <div className="flex items-start gap-2">
                   <Shield className="w-6 h-6 text-emerald-green shrink-0 mt-0.5 animate-bounce" />
                   <div>
-                    <h3 className="font-bold text-emerald-800 dark:text-emerald-400 text-sm">Emergency SOS Dispatched!</h3>
+                    <h3 className="font-bold text-emerald-800 dark:text-emerald-400 text-sm">{t(language, 'emergencyDispatched')}</h3>
                     <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal mt-1">
                       Platform 5 Security Dispatch has been notified. They have your seat location. Expected arrival: <strong>2 minutes</strong>.
                     </p>
@@ -158,7 +153,7 @@ export default function EmergencyScreen({
                   onClick={() => setSosTriggered(false)}
                   className="mt-4 w-full h-10 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-bold cursor-pointer"
                 >
-                  Cancel Distress Call
+                  {t(language, 'cancelCall')}
                 </button>
               </div>
             )}
@@ -185,7 +180,7 @@ export default function EmergencyScreen({
             {/* Helplines List */}
             <div className="space-y-2.5">
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 text-left">
-                Emergency Hotline Directories
+                {t(language, 'emergencyHelplines')}
               </h3>
 
               <div className="space-y-2">
@@ -218,9 +213,9 @@ export default function EmergencyScreen({
             {/* Title */}
             <div>
               <span className="text-[10px] text-blue-600 dark:text-blue-400 font-extrabold tracking-wider uppercase block">
-                ASSISTED WAYFINDING PREFERENCES
+                {t(language, 'assistedWayfinding')}
               </span>
-              <h2 className="text-xl font-bold tracking-tight">Accessibility & UI Mode</h2>
+              <h2 className="text-xl font-bold tracking-tight">{t(language, 'accessibilityMode')}</h2>
             </div>
 
             {/* Language Dropdown Selector */}
@@ -244,14 +239,14 @@ export default function EmergencyScreen({
             {/* Accessibility Features Toggles List */}
             <div className="space-y-2.5">
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                Specialized Support Toggles
+                {t(language, 'specializedSupport')}
               </h3>
 
               <div className="bento-card bg-white dark:bg-slate-900 p-5 shadow-sm space-y-3.5">
                 {/* Large Text */}
                 <div className="flex justify-between items-center">
                   <div>
-                    <strong className="text-xs text-slate-800 dark:text-slate-200 block">Large Accessible Text</strong>
+                    <strong className="text-xs text-slate-800 dark:text-slate-200 block">{t(language, 'largeText')}</strong>
                     <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">Enlarges headings and labels for readability</p>
                   </div>
                   <button
@@ -272,7 +267,7 @@ export default function EmergencyScreen({
                 {/* High Contrast */}
                 <div className="flex justify-between items-center">
                   <div>
-                    <strong className="text-xs text-slate-800 dark:text-slate-200 block">High Contrast Mode</strong>
+                    <strong className="text-xs text-slate-800 dark:text-slate-200 block">{t(language, 'highContrast')}</strong>
                     <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">Increases color contrast for low-vision eyes</p>
                   </div>
                   <button
@@ -293,7 +288,7 @@ export default function EmergencyScreen({
                 {/* Wheelchair friendly */}
                 <div className="flex justify-between items-center">
                   <div>
-                    <strong className="text-xs text-slate-800 dark:text-slate-200 block">Wheelchair-Friendly routes</strong>
+                    <strong className="text-xs text-slate-800 dark:text-slate-200 block">{t(language, 'wheelchairRoutes')}</strong>
                     <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">Filters navigation paths to use only lifts & ramps</p>
                   </div>
                   <button
@@ -314,7 +309,7 @@ export default function EmergencyScreen({
                 {/* Voice Guidance */}
                 <div className="flex justify-between items-center">
                   <div>
-                    <strong className="text-xs text-slate-800 dark:text-slate-200 block">Voice Guidance (Text-to-Speech)</strong>
+                    <strong className="text-xs text-slate-800 dark:text-slate-200 block">{t(language, 'voiceGuidance')}</strong>
                     <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">Speaks directions, platform changes and prompts</p>
                   </div>
                   <button
@@ -336,7 +331,7 @@ export default function EmergencyScreen({
           <div className="bg-blue-50/60 dark:bg-slate-900 border border-blue-100 dark:border-slate-800 rounded-2xl p-4 flex items-start gap-2.5 text-xs">
             <Volume2 className="w-5 h-5 text-blue-600 shrink-0 mt-0.5 animate-pulse" />
             <p className="leading-relaxed text-slate-600 dark:text-slate-400">
-              RailNav AI includes smart voice guidance. Toggling voice will automatically vocalize important announcements in your selected language.
+              {t(language, 'voiceNotice')}
             </p>
           </div>
         </div>

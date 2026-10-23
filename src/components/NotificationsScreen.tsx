@@ -71,11 +71,11 @@ export default function NotificationsScreen({
       <div className="p-5 pb-3 flex items-center justify-between shrink-0">
         <div className="text-left">
           <span className="text-[10px] text-blue-600 dark:text-blue-400 font-extrabold tracking-wider uppercase block">
-            STATION BROADCASTS
+            {t(language, 'stationBroadcasts')}
           </span>
           <h2 className="text-xl font-bold tracking-tight">{t(language, 'notificationsTab')}</h2>
           <p className="text-[10px] text-slate-400">
-            {unreadCount} unread announcements
+            {t(language, 'unreadAnnouncements', { count: unreadCount })}
           </p>
         </div>
 
@@ -85,7 +85,7 @@ export default function NotificationsScreen({
             onClick={onMarkAllRead}
             className="flex items-center gap-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-slate-900 px-3.5 py-1.5 rounded-xl border border-blue-100 dark:border-slate-800 active:scale-95 transition"
           >
-            <CheckCheck className="w-4 h-4" /> Mark All Read
+            <CheckCheck className="w-4 h-4" /> {t(language, 'markAllRead')}
           </button>
         )}
       </div>
@@ -97,7 +97,7 @@ export default function NotificationsScreen({
             <div className="w-16 h-16 bg-slate-100 dark:bg-slate-900 rounded-full flex items-center justify-center text-slate-400 dark:text-slate-600 mb-4 border border-slate-200 dark:border-slate-800">
               <Bell className="w-6 h-6" />
             </div>
-            <h4 className="text-sm font-bold">No active bulletins</h4>
+            <h4 className="text-sm font-bold">{t(language, 'noBulletins')}</h4>
             <p className="text-xs text-slate-400 max-w-xs mt-1 px-8">
               All quiet for your journey. Any delay or platform change alerts from the Station Master will appear here.
             </p>
@@ -127,7 +127,7 @@ export default function NotificationsScreen({
                 <div className="flex-1 space-y-1">
                   <div className="flex items-center gap-2">
                     <span className={`text-[8px] font-black uppercase tracking-wider px-2 py-0.5 rounded ${style.badge}`}>
-                      {notif.type === 'platform' ? 'Platform Alert' : notif.type === 'delay' ? 'Delay' : notif.type === 'route' ? 'Rerouting' : notif.type === 'crowd' ? 'Congestion' : 'Station Broadcast'}
+                      {notif.type === 'platform' ? t(language, 'platformAlert') : notif.type === 'delay' ? t(language, 'delayLabel') : notif.type === 'route' ? t(language, 'rerouting') : notif.type === 'crowd' ? t(language, 'congestion') : t(language, 'stationBroadcast')}
                     </span>
                     <span className="text-[9px] text-slate-400 font-semibold font-mono">{notif.time}</span>
                   </div>
@@ -146,7 +146,7 @@ export default function NotificationsScreen({
                       onClick={onNavigateToRoute}
                       className="mt-2.5 h-8 px-4 bg-[#0052CC] hover:bg-[#003D99] text-white rounded-xl text-[10px] font-bold flex items-center gap-1 cursor-pointer transition active:scale-95"
                     >
-                      Show New Path
+                      {t(language, 'showNewPath')}
                     </button>
                   )}
                 </div>
@@ -156,7 +156,7 @@ export default function NotificationsScreen({
                   id={`btn-clear-notification-${notif.id}`}
                   onClick={() => onClearNotification(notif.id)}
                   className="p-1.5 text-slate-400 hover:text-rose-500 self-start shrink-0 rounded-lg hover:bg-white/40 dark:hover:bg-slate-900 transition cursor-pointer"
-                  title="Dismiss bulletin"
+                  title={t(language, 'dismissBulletin')}
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>

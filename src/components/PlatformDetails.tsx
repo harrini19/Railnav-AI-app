@@ -128,7 +128,7 @@ export default function PlatformDetails({ isDarkMode, onStartNavigation }: Platf
             <span className="text-[10px] text-blue-600 dark:text-blue-400 font-extrabold tracking-wider uppercase block">
               {t(language, 'platformDetails')}
             </span>
-            <h2 className="text-xl font-bold tracking-tight">Platform {selectedPlat} Details</h2>
+            <h2 className="text-xl font-bold tracking-tight">{t(language, 'platformDetailsTitle', { platform: selectedPlat })}</h2>
           </div>
 
           <div className="flex gap-1.5 bg-slate-200 dark:bg-slate-900 p-1 rounded-xl">
@@ -175,8 +175,8 @@ export default function PlatformDetails({ isDarkMode, onStartNavigation }: Platf
             </span>
           </div>
 
-          <span className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold block mb-1">
-            {activeData.trainNumber} &bull; Arriving Train
+            <span className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold block mb-1">
+            {activeData.trainNumber} &bull; {t(language, 'liveTrainStatus')}
           </span>
           <h3 className="text-base font-extrabold text-slate-900 dark:text-white mt-0.5">
             {activeData.trainArriving}
@@ -187,13 +187,13 @@ export default function PlatformDetails({ isDarkMode, onStartNavigation }: Platf
 
           <div className="grid grid-cols-2 gap-3 mt-4 border-t border-slate-100 dark:border-slate-800/80 pt-3 text-xs">
             <div>
-              <span className="text-slate-400 block text-[10px] font-bold uppercase tracking-wider">Estimated Walk</span>
+              <span className="text-slate-400 block text-[10px] font-bold uppercase tracking-wider">{t(language, 'estimatedWalk')}</span>
               <span className="font-bold font-mono text-slate-800 dark:text-white flex items-center gap-1 mt-0.5">
                 <Footprints className="w-3.5 h-3.5 text-blue-600" /> {activeData.walkingTime}
               </span>
             </div>
             <div>
-              <span className="text-slate-400 block text-[10px] font-bold uppercase tracking-wider">Crowd Level</span>
+              <span className="text-slate-400 block text-[10px] font-bold uppercase tracking-wider">{t(language, 'crowdLevel')}</span>
               <span className="font-bold text-slate-800 dark:text-white mt-0.5">
                 {activeData.crowdLevel === 'Heavy' ? '🔴 High (Busy)' : activeData.crowdLevel === 'Medium' ? '🟡 Normal' : '🟢 Smooth'}
               </span>
@@ -205,7 +205,7 @@ export default function PlatformDetails({ isDarkMode, onStartNavigation }: Platf
       {/* Visual Coach Positions Layout */}
       <div className="px-5 py-2">
         <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 text-left mb-2 flex items-center justify-between">
-          <span>Coach Order Layout (Relative to Screen)</span>
+          <span>{t(language, 'coachOrder')}</span>
           <span className="text-[10px] text-slate-400 lowercase font-normal">(Engine at front)</span>
         </h3>
 
@@ -251,14 +251,14 @@ export default function PlatformDetails({ isDarkMode, onStartNavigation }: Platf
       {/* Facilities, Exit, Escalator points List */}
       <div className="px-5 py-2">
         <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 text-left mb-2">
-          Platform Facilitation & Exits
+          {t(language, 'platformFacilities')}
         </h3>
 
         <div className="bento-card space-y-3 bg-white dark:bg-slate-900 p-5 text-xs text-left">
           <div className="flex items-start gap-2.5">
             <span className="w-2.5 h-2.5 rounded-full bg-blue-600 shrink-0 mt-1"></span>
             <div>
-              <strong className="text-slate-800 dark:text-slate-200 block">Nearest Wheelchair Elevator</strong>
+              <strong className="text-slate-800 dark:text-slate-200 block">{t(language, 'nearestLift')}</strong>
               <p className="text-slate-500 dark:text-slate-400 mt-0.5">{activeData.nearestLift}</p>
             </div>
           </div>
@@ -268,7 +268,7 @@ export default function PlatformDetails({ isDarkMode, onStartNavigation }: Platf
           <div className="flex items-start gap-2.5">
             <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0 mt-1"></span>
             <div>
-              <strong className="text-slate-800 dark:text-slate-200 block">Nearest Station Escalator</strong>
+              <strong className="text-slate-800 dark:text-slate-200 block">{t(language, 'nearestEscalator')}</strong>
               <p className="text-slate-500 dark:text-slate-400 mt-0.5">{activeData.nearestEscalator}</p>
             </div>
           </div>
@@ -278,7 +278,7 @@ export default function PlatformDetails({ isDarkMode, onStartNavigation }: Platf
           <div className="flex items-start gap-2.5">
             <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0 mt-1"></span>
             <div>
-              <strong className="text-slate-800 dark:text-slate-200 block">Nearest Fire / Taxi Exit</strong>
+              <strong className="text-slate-800 dark:text-slate-200 block">{t(language, 'nearestExit')}</strong>
               <p className="text-slate-500 dark:text-slate-400 mt-0.5">{activeData.nearestExit}</p>
             </div>
           </div>
@@ -288,7 +288,7 @@ export default function PlatformDetails({ isDarkMode, onStartNavigation }: Platf
       {/* Platform Services Detail */}
       <div className="px-5 py-2 mb-4">
         <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 text-left mb-2">
-          Amenities & RO Water Points
+          {t(language, 'amenities')}
         </h3>
 
         <div className="grid grid-cols-1 gap-2">
@@ -314,7 +314,7 @@ export default function PlatformDetails({ isDarkMode, onStartNavigation }: Platf
           onClick={onStartNavigation}
           className="mt-6 w-full h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-blue-500/15 cursor-pointer"
         >
-          <Compass className="w-4.5 h-4.5" /> Start Live Wayfinding Directions
+          <Compass className="w-4.5 h-4.5" /> {t(language, 'liveWayfinding')}
         </button>
       </div>
     </div>

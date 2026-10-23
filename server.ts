@@ -10,7 +10,7 @@ import { verifyJwt } from "./src/server/auth";
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json());
 app.disable("x-powered-by");
@@ -200,9 +200,28 @@ function getGeminiClient(): GoogleGenAI | null {
 }
 
 // Local mock responder for high reliability when API key is missing or rate limited
-function getMockResponse(prompt: string): string {
+function getMockResponse(prompt: string, language = "en"): string {
   const query = prompt.trim().toLowerCase().replace(/\s+/g, " ");
   const has = (...terms: string[]) => terms.some((term) => query.includes(term));
+
+  if (language === "ta") {
+    if (has("restroom", "washroom", "toilet", "bathroom")) return "அருகிலுள்ள சுத்தமான கழிப்பறை, காத்திருப்பு அறைக்கு அருகிலுள்ள தரைத்தள Restroom Block A ஆகும். இதில் அணுகல்தன்மை வசதிகள் உள்ளன.";
+    if (has("lift", "elevator", "wheelchair", "accessible")) return "படிக்கட்டுகள் இல்லாத பயணத்திற்கு தரைத்தளத்தில் உள்ள Glass Lift A-ஐப் பயன்படுத்துங்கள். இது GF மற்றும் FF தளங்களை இணைக்கிறது.";
+    if (has("food", "court", "eat", "restaurant", "coffee")) return "IRCTC Food Court முதல் தளத்தில் உள்ளது. அங்கு உணவு, காபி மற்றும் சிற்றுண்டி கிடைக்கும்.";
+    if (has("platform")) return "பிளாட்ஃபார்ம் செல்ல பிரதான வழிகாட்டி பலகைகளைப் பின்பற்றுங்கள். அணுகல்தன்மைக்கு Glass Lift A-ஐப் பயன்படுத்தலாம்.";
+  }
+  if (language === "hi") {
+    if (has("restroom", "washroom", "toilet", "bathroom")) return "निकटतम साफ शौचालय ग्राउंड फ्लोर पर प्रतीक्षालय के पास Restroom Block A है। इसमें सुगम्यता सुविधाएं हैं।";
+    if (has("lift", "elevator", "wheelchair", "accessible")) return "सीढ़ियों से बचने के लिए ग्राउंड फ्लोर पर Glass Lift A का उपयोग करें। यह GF और FF को जोड़ती है।";
+    if (has("food", "court", "eat", "restaurant", "coffee")) return "IRCTC Food Court पहली मंजिल पर है। वहां भोजन, कॉफी और नाश्ता उपलब्ध है।";
+    if (has("platform")) return "प्लेटफ़ॉर्म तक पहुंचने के लिए मुख्य दिशा संकेतों का पालन करें। सुगम यात्रा के लिए Glass Lift A का उपयोग करें।";
+  }
+  if (language === "bn") {
+    if (has("restroom", "washroom", "toilet", "bathroom")) return "নিকটতম পরিষ্কার শৌচাগারটি গ্রাউন্ড ফ্লোরের অপেক্ষা হলের কাছে Restroom Block A। এখানে অ্যাক্সেসিবিলিটি সুবিধা আছে।";
+    if (has("lift", "elevator", "wheelchair", "accessible")) return "সিঁড়ি এড়াতে গ্রাউন্ড ফ্লোরের Glass Lift A ব্যবহার করুন। এটি GF এবং FF যুক্ত করে।";
+    if (has("food", "court", "eat", "restaurant", "coffee")) return "IRCTC Food Court প্রথম তলায়। সেখানে খাবার, কফি এবং জলখাবার পাওয়া যায়।";
+    if (has("platform")) return "প্ল্যাটফর্মে যেতে প্রধান নির্দেশিকা অনুসরণ করুন। সহজ যাত্রার জন্য Glass Lift A ব্যবহার করতে পারেন।";
+  }
 
   if (!query) return "Tell me what you need help finding, such as a platform, restroom, food court, lift, ticket counter, or emergency assistance.";
   if (has("hello", "hi ", "hey", "good morning", "good afternoon", "good evening")) {
@@ -304,7 +323,7 @@ async function generateWithFallback(ai: GoogleGenAI, message: string, systemProm
 // API Routes
 app.post(["/api/chat", "/ai/chat"], async (req, res) => {
   try {
-    const { message } = req.body;
+    const { message, language } = req.body;
     if (typeof message !== "string" || !message.trim()) {
       res.status(400).json({ error: "Message parameter is required." });
       return;
@@ -314,7 +333,7 @@ app.post(["/api/chat", "/ai/chat"], async (req, res) => {
     if (!ai) {
       // Use local response if API key is not configured or placeholder
       console.log("Using RailNav local response engine (no API key configured)");
-      const text = getMockResponse(message);
+      const text = getMockResponse(message, typeof language === "string" ? language : "en");
       res.json({ text });
       return;
     }
@@ -324,7 +343,7 @@ Your job is to provide clear, step-by-step indoor station directions, platform i
 Provide direct, short, bulleted or highly readable steps suitable for mobile screens. Keep it concise (under 120 words).
 If the user asks about platforms, give realistic instructions: "Take the main escalator to the foot overbridge and descend to Platform [X]."
 If they ask for lifts, escalators, or restrooms, explain their locations (e.g. near the waiting hall or platforms). Always highlight accessibility options (lifts, ramps, tactile paths) if relevant.
-Avoid dry or technical code references. Keep all responses friendly, humble, and practical for travelers who are carrying heavy luggage, traveling with seniors, or in a rush.`;
+Avoid dry or technical code references. Keep all responses friendly, humble, and practical for travelers who are carrying heavy luggage, traveling with seniors, or in a rush. Respond in the requested language code: ${typeof language === 'string' ? language : 'en'}. Keep train numbers, platform numbers, station names, and other identifiers unchanged.`;
 
     const text = await generateWithFallback(ai, message, systemPrompt);
     res.json({ text });
@@ -332,7 +351,7 @@ Avoid dry or technical code references. Keep all responses friendly, humble, and
     console.error("Gemini API Error, falling back to local engine:", error);
     // Fallback on failure
     try {
-      const text = getMockResponse(req.body.message);
+      const text = getMockResponse(req.body.message, typeof req.body.language === "string" ? req.body.language : "en");
       res.json({ text });
     } catch (fallbackError) {
       res.status(500).json({ error: "Internal Server Error" });

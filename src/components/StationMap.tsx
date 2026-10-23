@@ -335,8 +335,8 @@ export default function StationMap({
 
     if (progress >= 100) {
       return {
-        text: `Arrived at ${D.label}!`,
-        sub: `${D.details} • Wayfinding Completed`,
+        text: t(language, 'arrivedAt', { destination: D.label }),
+        sub: `${D.details} • ${t(language, 'arrived')}`,
         icon: (
           <svg className="w-5 h-5 text-emerald-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -345,8 +345,8 @@ export default function StationMap({
       };
     } else if (progress >= 75) {
       return {
-        text: `Proceed right to ${D.label}`,
-        sub: `Almost there • ${Math.round((100 - progress) * 1.5)} meters remaining`,
+        text: t(language, 'turnAt', { location: D.label }),
+        sub: t(language, 'almostThere', { meters: Math.round((100 - progress) * 1.5) }),
         icon: (
           <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -356,8 +356,8 @@ export default function StationMap({
     } else if (progress >= 50) {
       if (S.floor !== D.floor) {
         return {
-          text: `Take Elevator to ${D.floor}`,
-          sub: `Exiting at ${points[3].label}`,
+          text: t(language, 'takeElevator', { floor: D.floor }),
+          sub: t(language, 'exitingAt', { location: points[3].label }),
           icon: (
             <svg className="w-5 h-5 text-white animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
@@ -366,8 +366,8 @@ export default function StationMap({
         };
       }
       return {
-        text: `Turn at ${points[2].label}`,
-        sub: `Heading along the station corridor concourse`,
+        text: t(language, 'turnAt', { location: points[2].label }),
+        sub: t(language, 'followingPath', { destination: D.label }),
         icon: (
           <svg className="w-5 h-5 text-white -rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
@@ -376,8 +376,8 @@ export default function StationMap({
       };
     } else if (progress >= 25) {
       return {
-        text: `Walk straight past ${points[1].label}`,
-        sub: `Flat corridor walk • ${Math.round((100 - progress) * 1.8)}m to go`,
+        text: t(language, 'departing', { location: points[1].label }),
+        sub: t(language, 'corridorWalk', { meters: Math.round((100 - progress) * 1.8) }),
         icon: (
           <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
@@ -386,8 +386,8 @@ export default function StationMap({
       };
     } else {
       return {
-        text: `Departing from ${S.label}`,
-        sub: `Following smart path to ${D.label}`,
+        text: t(language, 'departing', { location: S.label }),
+        sub: t(language, 'followingPath', { destination: D.label }),
         icon: (
           <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -411,21 +411,21 @@ export default function StationMap({
     spokenNavigationPhase.current = phase;
 
     const spokenInstruction = phase === 100
-      ? `You have arrived at ${selectedDestination.label}.`
+      ? t(language, 'arrivedVoice', { destination: selectedDestination.label })
       : `${navInstruction.text}. ${navInstruction.sub}.`;
     onSpeak(spokenInstruction);
   }, [navInstruction, navProgress, navigationActive, onSpeak, selectedDestination]);
 
   const layerOptions = [
-    { id: 'platforms', label: 'Platforms', color: 'border-blue-500 text-blue-600 bg-blue-50/45 dark:bg-blue-950/20' },
-    { id: 'restrooms', label: 'Restrooms', color: 'border-indigo-500 text-indigo-600 bg-indigo-50/45 dark:bg-indigo-950/20' },
-    { id: 'food', label: 'Food & Dining', color: 'border-emerald-500 text-emerald-green bg-emerald-50/45 dark:bg-emerald-950/20' },
-    { id: 'waiting', label: 'Waiting Areas', color: 'border-purple-500 text-purple-600 bg-purple-50/45 dark:bg-purple-950/20' },
-    { id: 'elevators', label: 'Lifts/Elevators', color: 'border-teal-500 text-teal-600 bg-teal-50/45 dark:bg-teal-950/20' },
-    { id: 'escalators', label: 'Escalators', color: 'border-amber-500 text-amber-600 bg-amber-50/45 dark:bg-amber-950/20' },
+    { id: 'platforms', label: t(language, 'findPlatform'), color: 'border-blue-500 text-blue-600 bg-blue-50/45 dark:bg-blue-950/20' },
+    { id: 'restrooms', label: t(language, 'restroom'), color: 'border-indigo-500 text-indigo-600 bg-indigo-50/45 dark:bg-indigo-950/20' },
+    { id: 'food', label: t(language, 'foodCourt'), color: 'border-emerald-500 text-emerald-green bg-emerald-50/45 dark:bg-emerald-950/20' },
+    { id: 'waiting', label: t(language, 'waitingHall'), color: 'border-purple-500 text-purple-600 bg-purple-50/45 dark:bg-purple-950/20' },
+    { id: 'elevators', label: t(language, 'elevatorLift'), color: 'border-teal-500 text-teal-600 bg-teal-50/45 dark:bg-teal-950/20' },
+    { id: 'escalators', label: t(language, 'escalator'), color: 'border-amber-500 text-amber-600 bg-amber-50/45 dark:bg-amber-950/20' },
     { id: 'water', label: 'Drinking Water', color: 'border-cyan-500 text-cyan-600 bg-cyan-50/45 dark:bg-cyan-950/20' },
-    { id: 'atms', label: 'ATMs', color: 'border-pink-500 text-pink-600 bg-pink-50/45 dark:bg-pink-950/20' },
-    { id: 'charging', label: 'Charging Stn', color: 'border-yellow-500 text-yellow-600 bg-yellow-50/45 dark:bg-yellow-950/20' }
+    { id: 'atms', label: t(language, 'atmCenter'), color: 'border-pink-500 text-pink-600 bg-pink-50/45 dark:bg-pink-950/20' },
+    { id: 'charging', label: t(language, 'chargingStation'), color: 'border-yellow-500 text-yellow-600 bg-yellow-50/45 dark:bg-yellow-950/20' }
   ];
 
   const toggleLayer = (layerId: string) => {
@@ -517,7 +517,7 @@ export default function StationMap({
           </div>
           <div className="flex-1 text-left min-w-0">
             <h4 className="text-[10px] font-black tracking-widest truncate uppercase text-emerald-100">
-              {navProgress >= 100 ? 'ARRIVED' : `In ${Math.max(10, 180 - Math.round(navProgress * 1.8))} meters`}
+              {navProgress >= 100 ? t(language, 'arrived') : t(language, 'inMeters', { meters: Math.max(10, 180 - Math.round(navProgress * 1.8)) })}
             </h4>
             <p className="text-xs font-bold leading-tight truncate">
               {navInstruction.text}
@@ -552,7 +552,7 @@ export default function StationMap({
                 ? 'bg-rose-500 text-white border-rose-500 animate-pulse' 
                 : 'bg-white/95 dark:bg-slate-900/95 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800'
             }`}
-            title="Toggle Crowd Heatmap"
+            title={t(language, 'liveCrowd')}
           >
             <Sparkles className="w-4.5 h-4.5" />
           </button>
@@ -609,7 +609,7 @@ export default function StationMap({
               setMapCenter({ x: 0, y: 0 });
             }}
             className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-slate-900 border border-blue-200 dark:border-slate-800 flex items-center justify-center shadow-md text-blue-600 dark:text-blue-400 active:scale-95 transition"
-            title="Recenter Map view"
+            title={t(language, 'stationMap')}
           >
             <RefreshCw className="w-4 h-4 animate-spin" style={{ animationDuration: '8s' }} />
           </button>

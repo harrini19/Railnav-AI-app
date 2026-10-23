@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Train, MessageSquare, Route, MapPin, Compass, Search, HelpCircle, ArrowRight } from 'lucide-react';
+import { useLanguage, t } from '../i18n';
 
 interface OnboardingScreenProps {
   onComplete: () => void;
@@ -8,6 +9,7 @@ interface OnboardingScreenProps {
 
 export default function OnboardingScreen({ onComplete, isDarkMode }: OnboardingScreenProps) {
   const [step, setStep] = useState(0);
+  const language = useLanguage();
 
   const onboardingSteps = [
     {
@@ -109,7 +111,7 @@ export default function OnboardingScreen({ onComplete, isDarkMode }: OnboardingS
             onClick={onComplete}
             className="text-xs font-semibold text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
           >
-            Skip
+            {t(language, 'skip')}
           </button>
         ) : null}
       </div>
@@ -155,10 +157,10 @@ export default function OnboardingScreen({ onComplete, isDarkMode }: OnboardingS
         >
           {step === onboardingSteps.length - 1 ? (
             <>
-              Get Started <ArrowRight className="w-4 h-4" />
+              {t(language, 'getStarted')} <ArrowRight className="w-4 h-4" />
             </>
           ) : (
-            'Next'
+            t(language, 'next')
           )}
         </button>
       </div>

@@ -57,18 +57,18 @@ export default function HomeDashboard({
   };
 
   const quickActions = [
-    { id: 'platform', label: 'Find Platform', icon: <Train className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />, color: 'bg-blue-50 hover:bg-blue-100/50 dark:bg-slate-900 text-[#0052CC] dark:text-blue-400' },
-    { id: 'ticket', label: 'Ticket Counter', icon: <Ticket className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6" />, color: 'bg-orange-50 hover:bg-orange-100/50 dark:bg-slate-900 text-orange-600 dark:text-orange-400' },
-    { id: 'food', label: 'Food Court', icon: <Utensils className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6" />, color: 'bg-emerald-50 hover:bg-emerald-100/50 dark:bg-slate-900 text-emerald-green dark:text-emerald-400' },
-    { id: 'restroom', label: 'Restroom', icon: <Bath className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />, color: 'bg-indigo-50 hover:bg-indigo-100/50 dark:bg-slate-900 text-indigo-600 dark:text-indigo-400' },
-    { id: 'waiting', label: 'Waiting Hall', icon: <Coffee className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />, color: 'bg-purple-50 hover:bg-purple-100/50 dark:bg-slate-900 text-purple-600 dark:text-purple-400' },
-    { id: 'lift', label: 'Elevator Lift', icon: <ArrowUpDown className="w-5 h-5 transition-transform duration-300 group-hover:translate-y-[-2px] group-hover:scale-110" />, color: 'bg-teal-50 hover:bg-teal-100/50 dark:bg-slate-900 text-teal-600 dark:text-teal-400' },
-    { id: 'escalator', label: 'Escalator', icon: <ArrowRightLeft className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />, color: 'bg-amber-50 hover:bg-amber-100/50 dark:bg-slate-900 text-amber-600 dark:text-amber-400' },
-    { id: 'exit', label: 'Exit Gate', icon: <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />, color: 'bg-rose-50 hover:bg-rose-100/50 dark:bg-slate-900 text-rose-600 dark:text-rose-400' },
-    { id: 'atm', label: 'ATM Center', icon: <DollarSign className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />, color: 'bg-pink-50 hover:bg-pink-100/50 dark:bg-slate-900 text-pink-600 dark:text-pink-400' },
-    { id: 'charging', label: 'Charging Stn', icon: <Zap className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:animate-pulse" />, color: 'bg-yellow-50 hover:bg-yellow-100/50 dark:bg-slate-900 text-yellow-600 dark:text-yellow-400' },
-    { id: 'medical', label: 'Medical Room', icon: <HeartPulse className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />, color: 'bg-red-50 hover:bg-red-100/50 dark:bg-slate-900 text-red-600 dark:text-red-400' },
-    { id: 'police', label: 'Police Booth', icon: <ShieldAlert className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />, color: 'bg-slate-100 hover:bg-slate-200/50 dark:bg-slate-800 text-slate-700 dark:text-slate-300' },
+    { id: 'platform', label: t(language, 'findPlatform'), icon: <Train className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />, color: 'bg-blue-50 hover:bg-blue-100/50 dark:bg-slate-900 text-[#0052CC] dark:text-blue-400' },
+    { id: 'ticket', label: t(language, 'ticketCounter'), icon: <Ticket className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6" />, color: 'bg-orange-50 hover:bg-orange-100/50 dark:bg-slate-900 text-orange-600 dark:text-orange-400' },
+    { id: 'food', label: t(language, 'foodCourt'), icon: <Utensils className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6" />, color: 'bg-emerald-50 hover:bg-emerald-100/50 dark:bg-slate-900 text-emerald-green dark:text-emerald-400' },
+    { id: 'restroom', label: t(language, 'restroom'), icon: <Bath className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />, color: 'bg-indigo-50 hover:bg-indigo-100/50 dark:bg-slate-900 text-indigo-600 dark:text-indigo-400' },
+    { id: 'waiting', label: t(language, 'waitingHall'), icon: <Coffee className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />, color: 'bg-purple-50 hover:bg-purple-100/50 dark:bg-slate-900 text-purple-600 dark:text-purple-400' },
+    { id: 'lift', label: t(language, 'elevatorLift'), icon: <ArrowUpDown className="w-5 h-5 transition-transform duration-300 group-hover:translate-y-[-2px] group-hover:scale-110" />, color: 'bg-teal-50 hover:bg-teal-100/50 dark:bg-slate-900 text-teal-600 dark:text-teal-400' },
+    { id: 'escalator', label: t(language, 'escalator'), icon: <ArrowRightLeft className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />, color: 'bg-amber-50 hover:bg-amber-100/50 dark:bg-slate-900 text-amber-600 dark:text-amber-400' },
+    { id: 'exit', label: t(language, 'exitGate'), icon: <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />, color: 'bg-rose-50 hover:bg-rose-100/50 dark:bg-slate-900 text-rose-600 dark:text-rose-400' },
+    { id: 'atm', label: t(language, 'atmCenter'), icon: <DollarSign className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />, color: 'bg-pink-50 hover:bg-pink-100/50 dark:bg-slate-900 text-pink-600 dark:text-pink-400' },
+    { id: 'charging', label: t(language, 'chargingStation'), icon: <Zap className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:animate-pulse" />, color: 'bg-yellow-50 hover:bg-yellow-100/50 dark:bg-slate-900 text-yellow-600 dark:text-yellow-400' },
+    { id: 'medical', label: t(language, 'medicalRoom'), icon: <HeartPulse className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />, color: 'bg-red-50 hover:bg-red-100/50 dark:bg-slate-900 text-red-600 dark:text-red-400' },
+    { id: 'police', label: t(language, 'policeBooth'), icon: <ShieldAlert className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />, color: 'bg-slate-100 hover:bg-slate-200/50 dark:bg-slate-800 text-slate-700 dark:text-slate-300' },
   ];
 
   return (
@@ -85,7 +85,7 @@ export default function HomeDashboard({
             {t(language, 'welcome')}
           </span>
           <h2 className="text-xl font-bold tracking-tight">
-            Good Morning, {userName} 👋
+            {t(language, 'goodMorning', { name: userName })} 👋
           </h2>
           <p className="text-xs text-slate-400 dark:text-slate-500">
             {t(language, 'going')}
@@ -147,7 +147,7 @@ export default function HomeDashboard({
             {t(language, 'quickActions')}
           </h3>
           <span className="text-[10px] text-blue-600 dark:text-blue-400 font-extrabold bg-blue-50 dark:bg-slate-900 px-2 py-0.5 rounded-md">
-            12 Stations
+            {t(language, 'twelveStations')}
           </span>
         </div>
 
@@ -175,7 +175,7 @@ export default function HomeDashboard({
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-green animate-pulse"></span>
-            Your Ticket & Active Train
+            {t(language, 'ticketActiveTrain')}
           </h3>
           <span className="text-[10px] font-mono text-emerald-green bg-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-400 px-2.5 py-0.5 rounded-full font-bold">
             On Time
@@ -186,7 +186,7 @@ export default function HomeDashboard({
           <div className="flex justify-between items-start mb-3">
             <div className="text-left">
               <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-1">
-                Live Train Status
+                {t(language, 'liveTrainStatus')}
               </span>
               <h2 className="text-lg font-extrabold text-slate-800 dark:text-white leading-tight">
                 {liveTrain.number} &bull; {liveTrain.name}
@@ -196,7 +196,7 @@ export default function HomeDashboard({
             
             <div className="text-right">
               <span className="text-[10px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-wider block mb-1">
-                DEPARTS
+                {t(language, 'departs')}
               </span>
               <span className="font-mono font-bold text-sm text-slate-800 dark:text-white flex items-center justify-end gap-1">
                 <Clock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" /> {liveTrain.departureTime}
@@ -210,9 +210,9 @@ export default function HomeDashboard({
             </div>
             <div className="text-right text-[10px] font-bold text-slate-400 dark:text-slate-500">
               {liveTrain.delayStatus.delayed ? (
-                <span className="text-amber-500 font-bold">+{liveTrain.delayStatus.minutes} mins delay</span>
+                <span className="text-amber-500 font-bold">{t(language, 'delay', { minutes: liveTrain.delayStatus.minutes })}</span>
               ) : (
-                <span className="text-emerald-green font-bold">No delay</span>
+                <span className="text-emerald-green font-bold">{t(language, 'noDelay')}</span>
               )}
             </div>
           </div>
@@ -224,14 +224,14 @@ export default function HomeDashboard({
             className="mt-4 w-full h-11 bg-[#0052CC] hover:bg-[#003D99] dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer"
           >
             <Compass className="w-4 h-4 text-white animate-spin" style={{ animationDuration: '4s' }} />
-            Start Platform 5 Directions
+            {t(language, 'platformDirections', { platform: liveTrain.platform })}
           </button>
         </div>
 
         {/* Coach Position Bento Widget */}
         <div className="coach-layout-card bento-card text-white border-none p-5 flex flex-col justify-between mb-4">
           <div className="mb-3 text-left">
-            <h4 className="text-[10px] font-bold uppercase opacity-80 tracking-wider">Coach Layout Position</h4>
+            <h4 className="text-[10px] font-bold uppercase opacity-80 tracking-wider">{t(language, 'coachLayout')}</h4>
             <p className="text-base font-bold mt-1">
               S4, S5, S6 coaches near central elevator
             </p>
@@ -256,8 +256,8 @@ export default function HomeDashboard({
 
           <div className="flex items-center justify-between mt-3 border-t border-white/10 pt-3 text-left">
             <div className="flex items-center gap-1.5">
-              <span className="text-[10px] opacity-75">Platform Services:</span>
-              <span className="text-[9px] font-bold bg-white/20 px-2 py-0.5 rounded">RO Water & Toilets</span>
+              <span className="text-[10px] opacity-75">{t(language, 'platformServices')}</span>
+              <span className="text-[9px] font-bold bg-white/20 px-2 py-0.5 rounded">{t(language, 'roWaterToilets')}</span>
             </div>
             <span className="text-[10px] font-mono font-bold text-amber-300">PF 5 Center</span>
           </div>
@@ -270,7 +270,7 @@ export default function HomeDashboard({
           <div className="flex justify-between items-center mb-3">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-              Live Crowd Monitor
+              {t(language, 'liveCrowd')}
             </span>
             <div className="flex gap-1">
               <div className="w-1.5 h-1.5 rounded-full bg-emerald-400"></div>
@@ -279,7 +279,7 @@ export default function HomeDashboard({
             </div>
           </div>
           <p className="text-xs leading-relaxed text-slate-300 text-left">
-            Platform 5 concourse is currently <span className="text-emerald-400 font-extrabold uppercase">Low Crowd</span>. Ideal for wheelchair accessibility & comfortable seating.
+            Platform 5 concourse is currently <span className="text-emerald-400 font-extrabold uppercase">{t(language, 'lowCrowd')}</span>. Ideal for wheelchair accessibility & comfortable seating.
           </p>
           
           <div className="mt-4 grid grid-cols-5 gap-1.5">

@@ -19,7 +19,7 @@ import EmergencyScreen from './components/EmergencyScreen';
 import NotificationsScreen from './components/NotificationsScreen';
 import ProfileScreen from './components/ProfileScreen';
 import { getNotifications, subscribeToLiveEvents, triggerSOS } from './api/client';
-import { LanguageContext, t } from './i18n';
+import { Language, LanguageContext, languageConfig, t } from './i18n';
 import { STATION_DESTINATIONS } from './data';
 
 export default function App() {
@@ -39,13 +39,20 @@ export default function App() {
   const [selectedMapDestination, setSelectedMapDestination] = useState<any>(null);
 
   // Accessibility State
-  const [accessibility, setAccessibility] = useState<AccessibilitySettings>({
-    largeText: false,
-    highContrast: false,
-    wheelchairFriendly: false,
-    voiceGuidance: false,
-    language: 'en',
+  const [accessibility, setAccessibility] = useState<AccessibilitySettings>(() => {
+    try {
+      const saved = localStorage.getItem('railnav-accessibility');
+      const parsed = saved ? JSON.parse(saved) as Partial<AccessibilitySettings> : {};
+      const language = parsed.language === 'hi' || parsed.language === 'bn' || parsed.language === 'ta' ? parsed.language : 'en';
+      return { largeText: false, highContrast: false, wheelchairFriendly: false, voiceGuidance: false, ...parsed, language };
+    } catch {
+      return { largeText: false, highContrast: false, wheelchairFriendly: false, voiceGuidance: false, language: 'en' };
+    }
   });
+
+  useEffect(() => {
+    localStorage.setItem('railnav-accessibility', JSON.stringify(accessibility));
+  }, [accessibility]);
 
   // Active Simulated Notifications Array
   const [notifications, setNotifications] = useState<AppNotification[]>([
@@ -96,15 +103,20 @@ export default function App() {
     if (!accessibility.voiceGuidance && !force) return;
     try {
       if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel(); // Cancel active speech
+        window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = accessibility.language === 'hi'
-          ? 'hi-IN'
-          : accessibility.language === 'bn'
-            ? 'bn-IN'
-            : accessibility.language === 'ta'
-              ? 'ta-IN'
-              : 'en-IN';
+        const voiceLocale = languageConfig[accessibility.language as Language]?.voiceLocale || 'en-IN';
+        utterance.lang = voiceLocale;
+        const chooseVoice = () => {
+          const voices = window.speechSynthesis.getVoices();
+          const exact = voices.find((voice) => voice.lang.toLowerCase() === voiceLocale.toLowerCase());
+          const regional = voices.find((voice) => voice.lang.toLowerCase().startsWith(voiceLocale.slice(0, 2).toLowerCase()));
+          if (exact || regional) utterance.voice = exact || regional || null;
+        };
+        chooseVoice();
+        if (!window.speechSynthesis.getVoices().length) {
+          window.speechSynthesis.addEventListener('voiceschanged', chooseVoice, { once: true });
+        }
         utterance.rate = 1.0;
         utterance.pitch = 1.0;
         window.speechSynthesis.speak(utterance);
@@ -112,6 +124,11 @@ export default function App() {
     } catch (e) {
       console.warn('Speech synthesis blocked by browser security guidelines:', e);
     }
+  };
+
+  const handleLanguageChange = (language: Language) => {
+    window.speechSynthesis?.cancel();
+    setAccessibility((previous) => ({ ...previous, language }));
   };
 
   useEffect(() => {
@@ -284,7 +301,7 @@ export default function App() {
               isGuest={isGuest}
               isDarkMode={isDarkMode}
               language={accessibility.language as 'en' | 'hi' | 'bn' | 'ta'}
-              onLanguageChange={(language) => setAccessibility((previous) => ({ ...previous, language }))}
+              onLanguageChange={handleLanguageChange}
               onSearchFocus={() => setScreen('assistant')}
               onQuickAction={handleQuickAction}
               onNavigateTrain={handleNavigateTrain}
@@ -343,6 +360,7 @@ export default function App() {
               accessibility={accessibility}
               setAccessibility={setAccessibility}
               onSpeakText={handleSpeakText}
+              onLanguageChange={handleLanguageChange}
               onTriggerSOS={async (optionName) => {
                 await triggerSOS({ stationId: 'ndls', floorId: 'GF', note: optionName });
               }}

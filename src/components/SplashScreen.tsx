@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Compass, Train } from 'lucide-react';
+import { useLanguage, t } from '../i18n';
 
 interface SplashScreenProps {
   onComplete: () => void;
@@ -7,6 +8,7 @@ interface SplashScreenProps {
 }
 
 export default function SplashScreen({ onComplete, isDarkMode }: SplashScreenProps) {
+  const language = useLanguage();
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -90,7 +92,7 @@ export default function SplashScreen({ onComplete, isDarkMode }: SplashScreenPro
           ></div>
         </div>
         <div className="flex justify-between w-full mt-2 text-[10px] font-mono text-slate-400">
-          <span>SYSTEM LOADING...</span>
+          <span>{t(language, 'systemLoading')}</span>
           <span>{progress}%</span>
         </div>
       </div>

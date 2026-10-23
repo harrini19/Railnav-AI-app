@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Smartphone, Lock, ShieldCheck, Mail, Globe, ArrowLeft, Train } from 'lucide-react';
+import { useLanguage, t } from '../i18n';
 
 interface LoginScreenProps {
   onLoginSuccess: (name: string, phone: string) => void;
@@ -7,6 +8,7 @@ interface LoginScreenProps {
 }
 
 export default function LoginScreen({ onLoginSuccess, isDarkMode }: LoginScreenProps) {
+  const language = useLanguage();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [isOtpSent, setIsOtpSent] = useState(false);
@@ -94,7 +96,7 @@ export default function LoginScreen({ onLoginSuccess, isDarkMode }: LoginScreenP
         )}
         <div className="ml-auto flex items-center gap-1.5 bg-blue-50 dark:bg-slate-900 px-3 py-1 rounded-full border border-blue-100 dark:border-slate-800">
           <Globe className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-          <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide">English</span>
+          <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide">{t(language, 'loginLanguage')}</span>
         </div>
       </div>
 
@@ -106,7 +108,7 @@ export default function LoginScreen({ onLoginSuccess, isDarkMode }: LoginScreenP
             <Train className="w-7 h-7 text-white" />
           </div>
           <h2 className="text-2xl font-extrabold tracking-tight font-sans">
-            {isOtpSent ? 'Verify Number' : 'Welcome to RailNav'}
+            {isOtpSent ? t(language, 'verifyNumber') : t(language, 'welcomeRailnav')}
           </h2>
           <p className="text-xs text-slate-400 max-w-xs mx-auto">
             {isOtpSent
@@ -119,20 +121,20 @@ export default function LoginScreen({ onLoginSuccess, isDarkMode }: LoginScreenP
         {!isOtpSent ? (
           <form id="form-phone-submit" onSubmit={handlePhoneSubmit} className="space-y-4">
             <div className="space-y-1.5 text-left">
-              <label htmlFor="display-name" className="text-xs font-semibold text-slate-500 dark:text-slate-400">Your Name</label>
+              <label htmlFor="display-name" className="text-xs font-semibold text-slate-500 dark:text-slate-400">{t(language, 'yourName')}</label>
               <input
                 id="display-name"
                 type="text"
                 required
                 maxLength={40}
-                placeholder="Enter your name"
+                placeholder={t(language, 'enterName')}
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value.replace(/[<>]/g, ''))}
                 className="w-full h-12 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl px-4 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent dark:text-white"
               />
             </div>
             <div className="space-y-1.5 text-left">
-              <label htmlFor="phone-number" className="text-xs font-semibold text-slate-500 dark:text-slate-400">Mobile Number</label>
+              <label htmlFor="phone-number" className="text-xs font-semibold text-slate-500 dark:text-slate-400">{t(language, 'mobileNumber')}</label>
               <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-slate-500 dark:text-slate-400 select-none">
                   +91
@@ -143,7 +145,7 @@ export default function LoginScreen({ onLoginSuccess, isDarkMode }: LoginScreenP
                   maxLength={10}
                   pattern="[0-9]{10}"
                   required
-                  placeholder="Enter 10-digit number"
+                  placeholder={t(language, 'enterPhone')}
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ''))}
                   className="w-full h-12 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl pl-14 pr-4 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent dark:text-white"
@@ -164,14 +166,14 @@ export default function LoginScreen({ onLoginSuccess, isDarkMode }: LoginScreenP
               {loading ? (
                 <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
               ) : (
-                'Request OTP Code'
+                t(language, 'requestOtp')
               )}
             </button>
           </form>
         ) : (
           <form id="form-otp-submit" onSubmit={handleOtpSubmit} className="space-y-5">
             <div className="space-y-2 text-left">
-              <label className="text-xs font-semibold text-slate-500 dark:text-slate-400">Verification Code</label>
+              <label className="text-xs font-semibold text-slate-500 dark:text-slate-400">{t(language, 'verificationCode')}</label>
               <div className="flex justify-between gap-3 px-4">
                 {otpCode.map((digit, index) => (
                   <input
@@ -209,7 +211,7 @@ export default function LoginScreen({ onLoginSuccess, isDarkMode }: LoginScreenP
                   <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                 ) : (
                   <>
-                    <ShieldCheck className="w-4 h-4" /> Verify & Login
+                    <ShieldCheck className="w-4 h-4" /> {t(language, 'verifyLogin')}
                   </>
                 )}
               </button>
@@ -223,7 +225,7 @@ export default function LoginScreen({ onLoginSuccess, isDarkMode }: LoginScreenP
                 }}
                 className="w-full text-center text-[11px] font-bold text-blue-600 dark:text-blue-400 py-1.5"
               >
-                Resend OTP
+                {t(language, 'resendOtp')}
               </button>
             </div>
           </form>
@@ -232,7 +234,7 @@ export default function LoginScreen({ onLoginSuccess, isDarkMode }: LoginScreenP
         {/* Separator line */}
         <div className="flex items-center gap-3">
           <div className="h-[1px] bg-slate-200 dark:bg-slate-800 flex-1"></div>
-          <span className="text-[10px] text-slate-400 dark:text-slate-600 font-bold uppercase tracking-wider">or sign in with</span>
+          <span className="text-[10px] text-slate-400 dark:text-slate-600 font-bold uppercase tracking-wider">{t(language, 'orSignIn')}</span>
           <div className="h-[1px] bg-slate-200 dark:bg-slate-800 flex-1"></div>
         </div>
 
@@ -262,7 +264,7 @@ export default function LoginScreen({ onLoginSuccess, isDarkMode }: LoginScreenP
                 d="M12 23c3.24 0 5.97-1.07 7.96-2.91l-3.66-2.84c-1.1.74-2.52 1.18-4.3 1.18-3.1 0-5.73-2.51-6.66-5.46l-3.86 3C3.4 20.35 7.35 23 12 23z"
               />
             </svg>
-            Continue with Google
+            {t(language, 'continueGoogle')}
           </button>
 
           <button
@@ -270,7 +272,7 @@ export default function LoginScreen({ onLoginSuccess, isDarkMode }: LoginScreenP
             onClick={handleGuestSignIn}
             className="w-full h-11 bg-transparent text-blue-600 dark:text-blue-400 hover:bg-blue-50/40 dark:hover:bg-slate-900 rounded-2xl flex items-center justify-center gap-2 text-xs font-bold transition"
           >
-            Continue as Guest
+            {t(language, 'continueGuest')}
           </button>
         </div>
       </div>
